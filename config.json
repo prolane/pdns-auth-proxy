@@ -1,9 +1,9 @@
 {
     "backend": "http://localhost:8080",
-    "XApiKey": "secret-key",
+    "XApiKey": "secretkey",
     "proxyPort": 8001,
     "keys": {
-        "password": "test.com",
-        "whatever": "example.com"
+        "myapikey": "test.com",
+        "changeme": "example.com"
     }
 }
