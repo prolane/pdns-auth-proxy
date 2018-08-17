@@ -6,7 +6,7 @@ var express      = require("express"),
 
 var app = express();
 
-app.all("/api/v1/servers/localhost/zones/:zone", function(req, res, next) {
+app.all("/api/:apiversion/servers/:server/zones/:zone", function(req, res, next) {
   var proxy = requestProxy({
     url: config.backend + req.path,
     headers: {
