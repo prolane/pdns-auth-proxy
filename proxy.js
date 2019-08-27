@@ -44,5 +44,22 @@ app.all("/api/:apiversion/servers", function(req, res, next) {
   }
 });
 
+app.all("/api/:apiversion/servers/:server/zones", function(req, res, next) {
+  if (config.allowListingZones && config.keys[req.get("X-API-Key")]) {
+    var proxy = requestProxy({
+      url: config.backend + req.path,
+      headers: {
+        "X-API-Key": config.XApiKey
+      },
+      query: {
+        zone: config.keys[req.get("X-API-Key")],
+      }
+    });
+    proxy(req, res, next);
+  } else {
+    res.status(403).send('Forbidden');
+  }
+});
+
 // Start the proxy
 app.listen(config.proxyPort, () => console.log('pdns-auth-proxy started and listening on port ' + config.proxyPort +'!'));
