@@ -46,7 +46,7 @@ On the pdns server start the proxy
 node $INSTALL_DIR/pdns-auth-proxy/proxy.js
 ```
 
-You can now use the pdns API exaclty the same way you were used to (as described in the pdns docs). For example, to GET the zone data:
+You can now use the pdns API exactly the same way you were used to (as described in the pdns docs). For example, to GET the zone data:
 ```
 curl -s -H 'X-API-Key: myapikey' http://10.1.2.3:8001/api/v1/servers/localhost/zones/test.com
 ```
