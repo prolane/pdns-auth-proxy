@@ -20,7 +20,7 @@ app.all("/api/:apiversion/servers/:server/zones/:zone", function(req, res, next)
       // API Key is valid for this zone. Proxy the api call to the pdns backend.
       proxy(req, res, next);
     } else {
-      // API Key used in the api call does not match the zone 
+      // API Key used in the api call does not match the zone
       res.status(403).send('Not authorized for zone "' + req.params.zone + '"!');
       console.log("WARN: API-Key '" + req.get("X-API-Key") + "' tried accessing zone " + req.params.zone);
     }
