@@ -16,7 +16,7 @@ app.all("/api/:apiversion/servers/:server/zones/:zone", function(req, res, next)
   // Check api-key with zone
   if (req.get("X-API-Key") in config.keys) {
     // API Key is valid. Check if it matches the zone.
-    if (config.keys[req.get("X-API-Key")] == req.params.zone) {
+    if (config.keys[req.get("X-API-Key")] == req.params.zone || (config.keys[req.get("X-API-Key")] + '.') == req.params.zone) {
       // API Key is valid for this zone. Proxy the api call to the pdns backend.
       proxy(req, res, next);
     } else {
