@@ -21,12 +21,12 @@ app.all("/api/:apiversion/servers/:server/zones/:zone", function(req, res, next)
       proxy(req, res, next);
     } else {
       // API Key used in the api call does not match the zone
-      res.status(403).send('Not authorized for zone "' + req.params.zone + '"!');
+      res.status(403).send({error: 'Not authorized for zone "' + req.params.zone + '"!'});
       console.log("WARN: API-Key '" + req.get("X-API-Key") + "' tried accessing zone " + req.params.zone);
     }
   } else {
     // API Key not present in config.keys
-    res.status(401).send('Unknown API Key!');
+    res.status(401).send({error: 'Unknown API Key!'});
   }
 });
 
@@ -40,7 +40,7 @@ app.all("/api/:apiversion/servers", function(req, res, next) {
     });
     proxy(req, res, next);
   } else {
-    res.status(403).send('Forbidden');
+    res.status(403).send({error: 'Forbidden'});
   }
 });
 
@@ -57,7 +57,7 @@ app.all("/api/:apiversion/servers/:server/zones", function(req, res, next) {
     });
     proxy(req, res, next);
   } else {
-    res.status(403).send('Forbidden');
+    res.status(403).send({error: 'Forbidden'});
   }
 });
 
