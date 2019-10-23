@@ -2,6 +2,8 @@
     "backend": "http://localhost:8080",
     "XApiKey": "secretkey",
     "proxyPort": 8001,
+    "forwardServersRequests": false,
+    "allowListingZones": false,
     "keys": {
         "myapikey": "test.com",
         "changeme": "example.com"

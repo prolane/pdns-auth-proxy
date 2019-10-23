@@ -16,17 +16,48 @@ app.all("/api/:apiversion/servers/:server/zones/:zone", function(req, res, next)
   // Check api-key with zone
   if (req.get("X-API-Key") in config.keys) {
     // API Key is valid. Check if it matches the zone.
-    if (config.keys[req.get("X-API-Key")] == req.params.zone) {
+    if (config.keys[req.get("X-API-Key")] == req.params.zone || (config.keys[req.get("X-API-Key")] + '.') == req.params.zone) {
       // API Key is valid for this zone. Proxy the api call to the pdns backend.
       proxy(req, res, next);
     } else {
-      // API Key used in the api call does not match the zone 
-      res.status(403).send('Not authorized for zone "' + req.params.zone + '"!');
+      // API Key used in the api call does not match the zone
+      res.status(403).send({error: 'Not authorized for zone "' + req.params.zone + '"!'});
       console.log("WARN: API-Key '" + req.get("X-API-Key") + "' tried accessing zone " + req.params.zone);
     }
   } else {
     // API Key not present in config.keys
-    res.status(401).send('Unknown API Key!');
+    res.status(401).send({error: 'Unknown API Key!'});
+  }
+});
+
+app.all("/api/:apiversion/servers", function(req, res, next) {
+  if (config.forwardServersRequests && config.keys[req.get("X-API-Key")]) {
+    var proxy = requestProxy({
+      url: config.backend + req.path,
+      headers: {
+        "X-API-Key": config.XApiKey
+      }
+    });
+    proxy(req, res, next);
+  } else {
+    res.status(403).send({error: 'Forbidden'});
+  }
+});
+
+app.all("/api/:apiversion/servers/:server/zones", function(req, res, next) {
+  if (config.allowListingZones && config.keys[req.get("X-API-Key")]) {
+    var proxy = requestProxy({
+      url: config.backend + req.path,
+      headers: {
+        "X-API-Key": config.XApiKey
+      },
+      query: {
+        zone: config.keys[req.get("X-API-Key")],
+      }
+    });
+    proxy(req, res, next);
+  } else {
+    res.status(403).send({error: 'Forbidden'});
   }
 });
 
